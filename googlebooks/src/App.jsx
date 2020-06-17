@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
-import {InputGroup, Input, InputGroupAddon, Button, FormGroup, Label} from 'reactstrap'
+import {InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, Spinner} from 'reactstrap'
 import './App.css';
 import {ToastContainer, tost} from 'reac-toastify'
 import 'react-toastify/dist/ReactToastify.min.css';
+import axios from 'axios';
+import BookCard from './BookCard.jsx'
 
 function App() {
-  const {maxResults, setMaxResults} = useState(10);
-  const {startIndex, setStartIndex} = useState(1);
-  const {query, setQuery} = useState(' ');
-  const {loading, setLoading} = useState(false)
+  const [maxResults, setMaxResults] = useState(10);
+  const [startIndex, setStartIndex] = useState(1);
+  const [query, setQuery] = useState(' ');
+  const [loading, setLoading] = useState(false)
+  const [cards, setCards ] =  useState([])
 
   const handleSubmit = () => {
     setLoading(true);
@@ -20,10 +23,16 @@ function App() {
         if (startIndex >= res.data.totalItems || startIndex < 1) {
           toast.error('max results must be between 1 and ${res.data.totalItems}'
           );
-        } 
-        console.log(res.data);
-      }).catch(err => {
-        console.log(err)
+        }  else {
+          if (res.data.items.length > 0) {
+              setCards(res.data.items)
+              setLoading(false)
+          }
+        }
+      })
+      .catch(err => {
+        setLoading(true)
+        toast.error('${err.response.data.error.message}') 
       })
     }
 
@@ -61,9 +70,39 @@ function App() {
         </div>
       </div>
     )
+  };
+
+  const handleCards = () => {
+    console.log(cards)
+    const items = cards.map((item, i) => {
+      let thumbnail = '';
+      if(item.volumeInfo.imageLinks.thumbnail) {
+        thumbnail = item.volumeInfo.imageLinks.thumbnail;
+      }
+
+      return (
+        <div className = "col-lg-4" key={ item.id }>
+          <BookCard thumbnail={ thumbnail}/>
+        </div>
+      )
+    })
+    if (loading) {
+      return(
+        <div className = 'd-flex justify-content-center mt-3'>
+        <Spinner style = { { width: '3rem', height: '3rem'}}/>
+        </div>
+      ) else {
+        return (
+          <div className = 'container my-5'>
+            <div className = "row">{ items}</div>
+          </div>
+        );
+      }
+    }
   }
-  return <div >
+  return <div className = 'w-100 h-100' >
   {mainHeader()}
+  {handleCards()}
   <toastContainer />
   </div>;
    
