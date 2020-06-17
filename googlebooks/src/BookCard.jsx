@@ -18,7 +18,7 @@ const BookCard = ({ thumbnail, title, pageCount, language, description, authors,
                 </button>
             </div>
             <div className = "modal-body">
-                <div className='d-flex justify-content-between'>
+                <div className='d-flex justify-content-between ml-3'>
                     <img src={thumbnail} alt = {title} style={{height: '233px'}}/>
                     <div>
                         <p>Page Count: { pageCount }</p>
@@ -30,7 +30,27 @@ const BookCard = ({ thumbnail, title, pageCount, language, description, authors,
 
                 </div>
                 <div className="mt-3">{description}</div>
+                <div className="modal-footer">
+                    <div className="left-slide">
+                        <a href={ previewLink } className = 'btn-link' color = 'default' type = 'button' target = 'blank' rel = 'nonpener noreferre'>Preview Link</a>
+                    </div>
+                    <div className = 'divider'></div>
+                    <div className = 'right-slide'>
+                        <a
+                            href={infoLink}
+                            className='btn-link'
+                            color='default'
+                            type='button'
+                            target='_blank'
+                            rel='noopener rorefferer'
+                            >
+                                Info Link
+                            </a>
+                    </div>
+                </div>
+                
             </div>
+
         </Modal>
     </Card>
 };
