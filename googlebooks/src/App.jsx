@@ -1,12 +1,36 @@
 import React, {useState} from 'react';
-import {InputGroup, Input, InputGroupAddon, Button} from 'reactstrap'
+import {InputGroup, Input, InputGroupAddon, Button, FormGroup, Label} from 'reactstrap'
 import './App.css';
+import {ToastContainer, tost} from 'reac-toastify'
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function App() {
-  const {maxResults, setMaxResults} = useState(10)
-  const {startIndex, setStartIndex} = useState(1)
-  const {query, setQuery} = useState(' ')
-  const mainheader = () => {
+  const {maxResults, setMaxResults} = useState(10);
+  const {startIndex, setStartIndex} = useState(1);
+  const {query, setQuery} = useState(' ');
+  const {loading, setLoading} = useState(false)
+
+  const handleSubmit = () => {
+    setLoading(true);
+    if(maxResults > 40 || maxResults < 1) {
+      toast.error('max results must be between 1 and 40')
+    } else {
+      axios.get('https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=${maxResults}&startIndex=${startIndex}'
+      ).then(res => {
+        if (startIndex >= res.data.totalItems || startIndex < 1) {
+          toast.error('max results must be between 1 and ${res.data.totalItems}'
+          );
+        } 
+        console.log(res.data);
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+
+
+  };
+
+  const mainHeader = () => {
     return (
       <div classname = 'main-image d-flex justify-content-center align-items-center flex-column'>
         {/* Overlay */}
@@ -38,11 +62,11 @@ function App() {
       </div>
     )
   }
-  return (
-    <div >
-      {mainheader()}
-    </div>
-  ); 
+  return <div >
+  {mainHeader()}
+  <toastContainer />
+  </div>;
+   
 }
 
 export default App;
