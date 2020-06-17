@@ -17,6 +17,20 @@ const BookCard = ({ thumbnail, title, pageCount, language, description, authors,
                     <span aria-hidden={true}></span>
                 </button>
             </div>
+            <div className = "modal-body">
+                <div className='d-flex justify-content-between'>
+                    <img src={thumbnail} alt = {title} style={{height: '233px'}}/>
+                    <div>
+                        <p>Page Count: { pageCount }</p>
+                        <p>Language: { language }</p>
+                        <p>Authors: { authors}</p>
+                        <p>Publisher : { publisher }</p>
+
+                    </div>
+
+                </div>
+                <div className="mt-3">{description}</div>
+            </div>
         </Modal>
     </Card>
 };
