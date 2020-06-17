@@ -82,7 +82,18 @@ function App() {
 
       return (
         <div className = "col-lg-4" key={ item.id }>
-          <BookCard thumbnail={ thumbnail}/>
+          <BookCard 
+          thumbnail={ thumbnail} 
+          title= {item.volumeInfo.title}
+          pageCount = {item.volumeInfo.pageCount}
+          language = {item.volumeInfo.language}
+          authors = {item.volumeInfo.authors}
+          publisher = {item.volumeInfo.publisher}
+          description = {item.volumeInfo.description}
+          previewLink = {item.volumeInfo.previewLink}
+          infoLink = {item.volumeInfo.infoLink}
+
+          />
         </div>
       )
     })
